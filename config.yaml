@@ -7,6 +7,6 @@ server:
   maxQueuedSize: 100
 
   uri_target: /api/files
-  files_dir: /api/files
+  files_dir: /files
 
   max_file_size: 1GB
