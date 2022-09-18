@@ -1,0 +1,12 @@
+
+server:
+  host: hostname.com
+  port: 8080
+
+  maxThreads: 16
+  maxQueuedSize: 100
+
+  uri_target: /api/files
+  files_dir: /api/files
+
+  max_file_size: 1GB
