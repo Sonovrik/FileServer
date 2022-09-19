@@ -6,6 +6,7 @@ void FileServerApplication::initServer(const YAML::Node& config)
     auto port = config["port"].as<Poco::UInt16>();
     auto hostname = config["host"].as<std::string>() + ":" + config["port"].as<std::string>();
 
+    m_Some = hostname;
     auto* params = new Poco::Net::HTTPServerParams;
     params->setServerName(hostname);
     params->setMaxThreads(config["maxThreads"].as<int>());
@@ -23,6 +24,7 @@ void FileServerApplication::initialize(Poco::Util::Application &self)
 
 int FileServerApplication::main(const std::vector<std::string> &)
 {
+    this->addSubsystem(this);
     m_Serv->start();
     logger().information("HTTP Server started on port %hu.", m_Serv->port());
     waitForTerminationRequest();
