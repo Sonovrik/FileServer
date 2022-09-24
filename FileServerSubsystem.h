@@ -1,7 +1,5 @@
 #pragma once
 
-#include "yaml-cpp/yaml.h"
-
 #include <Poco/Util/Subsystem.h>
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Util/ServerApplication.h>
@@ -20,7 +18,10 @@ private:
     void initialize(Poco::Util::Application& app) override;
     std::size_t parse_size(const std::string& size_str) const;
 
-public:
-    ~FileServerSubsystem() override = default;
+    void uninitialize() override;
 
+public:
+    const char* name() const override;
+
+    ~FileServerSubsystem() override = default;
 };
