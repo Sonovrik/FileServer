@@ -20,7 +20,7 @@ void FileServerApplication::initialize(Poco::Util::Application &self)
 
 int FileServerApplication::main(const std::vector<std::string> &)
 {
-    logger().information("Start FileServer on port %i", static_cast<int>(this->getFileServerSubsystem().getPort()));
+    logger().information("Start FileServer on port %hu", this->getFileServerSubsystem().getPort());
     waitForTerminationRequest();
     logger().information("Stopping FileServer...");
 
