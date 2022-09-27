@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FileServerSubsystem.h"
+
 #include "yaml-cpp/yaml.h"
 
 #include "Poco/Util/ServerApplication.h"
@@ -8,13 +10,12 @@
 class FileServerApplication : public Poco::Util::ServerApplication
 {
 private:
-    std::unique_ptr<Poco::Net::HTTPServer> m_Serv;
-
-private:
-    void initServer(const YAML::Node& config);
     void initialize(Application& self) override;
     int main(const std::vector<std::string>&) override;
 
 public:
+    const FileServerSubsystem& getFileServerSubsystem() const;
+
+    FileServerApplication() = default;
     ~FileServerApplication() override = default;
 };

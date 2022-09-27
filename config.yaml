@@ -8,4 +8,4 @@ server:
   uri_target: /api/files
   files_dir: /files
 
-  max_file_size: 1GB
+  max_file_size: 1_GB

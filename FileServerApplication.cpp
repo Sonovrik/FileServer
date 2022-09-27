@@ -1,33 +1,33 @@
 #include "FileServerApplication.h"
 #include "handlers/RequestFactory.h"
-
-void FileServerApplication::initServer(const YAML::Node& config)
-{
-    auto port = config["port"].as<Poco::UInt16>();
-    auto hostname = config["host"].as<std::string>() + ":" + config["port"].as<std::string>();
-
-    auto* params = new Poco::Net::HTTPServerParams;
-    params->setServerName(hostname);
-    params->setMaxThreads(config["maxThreads"].as<int>());
-    params->setMaxQueued(config["maxQueuedSize"].as<int>());
-
-    m_Serv = std::make_unique<Poco::Net::HTTPServer>(new handlers::RequestFactory, port, params);
-}
+#include "FileServerSubsystem.h"
 
 void FileServerApplication::initialize(Poco::Util::Application &self)
 {
-    initServer(YAML::LoadFile("config.yaml")["server"]);
+    auto sub = new FileServerSubsystem;
+    this->addSubsystem(sub);
 
-    Application::initialize(self);
+    try
+    {
+        Application::initialize(self);
+    }
+    catch (std::exception &e)
+    {
+        logger().fatal("Can't start FileServer: %s", static_cast<std::string>(e.what()));
+        return;
+    }
 }
 
 int FileServerApplication::main(const std::vector<std::string> &)
 {
-    m_Serv->start();
-    logger().information("HTTP Server started on port %hu.", m_Serv->port());
+    logger().information("Start FileServer on port %hu", this->getFileServerSubsystem().getPort());
     waitForTerminationRequest();
-    logger().information("Stopping HTTP Server...");
-    m_Serv->stop();
+    logger().information("Stopping FileServer...");
 
     return Application::EXIT_OK;
+}
+
+const FileServerSubsystem &FileServerApplication::getFileServerSubsystem() const
+{
+    return this->getSubsystem<FileServerSubsystem>();
 }

@@ -18,8 +18,6 @@ find_package(Poco REQUIRED COMPONENTS Foundation Net XML Util)
 
 if (${Poco_FOUND})
     message(STATUS "Poco version: ${Poco_VERSION}")
-    message(STATUS "Poco library dir: ${Poco_LIBRARY_DIRS}")
-    message(STATUS "Poco include dir: ${Poco_INCLUDE_DIRS}")
     message(STATUS "Poco libs: ${Poco_LIBRARIES}")
 else()
     message(FATAL_ERROR "Poco was not found")
@@ -27,8 +25,14 @@ endif()
 
 add_executable(FileServer
         handlers/RequestFactory.cpp
+        FileServerSubsystem.cpp
         FileServerApplication.cpp
+        utils/utils.cpp
         main.cpp)
+
+target_include_directories(${PROJECT_NAME}
+        PRIVATE
+            ${PROJECT_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
