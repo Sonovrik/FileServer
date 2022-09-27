@@ -27,6 +27,7 @@ add_executable(FileServer
         handlers/RequestFactory.cpp
         FileServerSubsystem.cpp
         FileServerApplication.cpp
+        utils/utils.cpp
         main.cpp)
 
 target_include_directories(${PROJECT_NAME}
