@@ -4,6 +4,8 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Util/ServerApplication.h>
 
+#include "get/GetFileHandler.h"
+
 namespace handlers {
 
 Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::Net::HTTPServerRequest& request)
@@ -21,7 +23,7 @@ Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::
 
         if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
         {
-            return nullptr;
+            return new GetFileHandler;
         }
 
     }
