@@ -14,8 +14,6 @@ private:
     int main(const std::vector<std::string>&) override;
 
 public:
-    const FileServerSubsystem& getFileServerSubsystem() const;
-
     FileServerApplication() = default;
     ~FileServerApplication() override = default;
 };
