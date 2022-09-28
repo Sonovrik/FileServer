@@ -4,7 +4,7 @@
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/File.h>
 
-namespace handler
+namespace handlers
 {
 
 class UploadFileHandler : public Poco::Net::HTTPRequestHandler
