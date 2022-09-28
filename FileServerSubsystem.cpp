@@ -15,10 +15,10 @@ void FileServerSubsystem::initialize(Poco::Util::Application &app)
     auto serv_conf = YAML::LoadFile(Poco::Path::current() + "config.yaml")["server"];
 
     m_UriTarget = serv_conf["uri_target"].as<std::string>();
+    m_MaxFileSize = parsing::getAsBytesSize(serv_conf["max_file_size"].as<std::string>());
+
     m_FilesDir = Poco::Path::current() + serv_conf["files_dir"].as<std::string>();
     m_FilesDir.createDirectories(); // throw on error
-
-    m_MaxFileSize = parsing::getAsBytesSize(serv_conf["max_file_size"].as<std::string>());
 
     auto port = serv_conf["port"].as<Poco::UInt16>();
     auto hostname = serv_conf["host"].as<std::string>() + ":" + serv_conf["port"].as<std::string>();
@@ -47,7 +47,7 @@ const Poco::File &FileServerSubsystem::getFilesDirectory() const
     return m_FilesDir;
 }
 
-const Poco::URI &FileServerSubsystem::getUriTarget() const
+const std::string &FileServerSubsystem::getUriTarget() const
 {
     return m_UriTarget;
 }

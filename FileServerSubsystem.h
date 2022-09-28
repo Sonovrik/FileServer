@@ -9,7 +9,7 @@
 class FileServerSubsystem : public Poco::Util::Subsystem
 {
 private:
-    Poco::URI   m_UriTarget;
+    std::string   m_UriTarget;
     Poco::File  m_FilesDir;
     std::size_t m_MaxFileSize;
 
@@ -25,6 +25,6 @@ public:
 
     Poco::UInt16 getPort() const;
     const Poco::File& getFilesDirectory() const;
-    const Poco::URI& getUriTarget() const;
+    const std::string& getUriTarget() const;
     std::size_t getMaxFileSize() const;
 };

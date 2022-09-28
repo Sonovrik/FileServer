@@ -25,6 +25,7 @@ endif()
 
 add_executable(FileServer
         handlers/RequestFactory.cpp
+        handlers/get/GetFileHandler.cpp
         FileServerSubsystem.cpp
         FileServerApplication.cpp
         utils/utils.cpp
