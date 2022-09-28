@@ -23,7 +23,7 @@ Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::
 
         if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
         {
-            return new GetFileHandler;
+            return new GetFileHandler(serv.getFilesDirectory());
         }
 
     }

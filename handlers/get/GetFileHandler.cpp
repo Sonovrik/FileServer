@@ -1,8 +1,14 @@
 #include "GetFileHandler.h"
 
+#include "FileServerApplication.h"
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/JSON/Parser.h>
 
+namespace handlers
+{
+
+GetFileHandler::GetFileHandler(const Poco::File &files_dir)
+    : m_FilesDirectory(files_dir) {}
 
 void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)
 {
@@ -20,7 +26,16 @@ void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net:
         return; // set 400
     }
 
-    std::cout << filename << std::endl;
+    Poco::File file = m_FilesDirectory.path() + filename;
+    if (file.exists())
+    {
+        // unzip file
+        // send file
+    }
+    else
+    {
+        return; // set 404
+    }
+}
 
-    res.send();
 }

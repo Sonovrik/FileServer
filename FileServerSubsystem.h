@@ -3,13 +3,12 @@
 #include <Poco/Util/Subsystem.h>
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Util/ServerApplication.h>
-#include <Poco/URI.h>
 #include <Poco/File.h>
 
 class FileServerSubsystem : public Poco::Util::Subsystem
 {
 private:
-    std::string   m_UriTarget;
+    std::string m_UriTarget;
     Poco::File  m_FilesDir;
     std::size_t m_MaxFileSize;
 
