@@ -1,25 +1,50 @@
 #include "RequestFactory.h"
 #include "FileServerApplication.h"
 
+#include "get/GetFileHandler.h"
+#include "post/UploadFileHandler.h"
+
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Util/ServerApplication.h>
 
-
-namespace handlers {
-
-Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::Net::HTTPServerRequest &request)
+namespace handlers
 {
-    Poco::Util::Application& app = Poco::Util::Application::instance();
-    auto& serv = app.getSubsystem<FileServerApplication>();
-    app.logger().information("Request from %s", request.clientAddress().toString());
 
-    if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
+Poco::Net::HTTPRequestHandler* GetHandler(const Poco::Net::HTTPServerRequest& request, const FileServerSubsystem& serv)
+{
+    return nullptr;
+}
+
+Poco::Net::HTTPRequestHandler* PostHandler(const Poco::Net::HTTPServerRequest& request, const FileServerSubsystem& serv)
+{
+    if (request.getURI() == serv.getUriTarget())
     {
-        return nullptr;
+        return new UploadFileHandler(serv.getFilesDirectory());
     }
 
     return nullptr;
 }
 
+Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::Net::HTTPServerRequest& request)
+{
+    Poco::Util::Application& app = FileServerApplication::instance();
+    auto& serv = app.getSubsystem<FileServerSubsystem>();
+    app.logger().information("Request from %s", request.clientAddress().toString());
+
+    Poco::Net::HTTPRequestHandler *handler = nullptr;
+    if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
+    {
+            handler = PostHandler(request, serv);
+    }
+
+    if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
+    {
+        handler = GetHandler(request, serv);
+    }
+
+    return  handler != nullptr
+            ?   handler
+            :   handler; // TODO return 404
+}
 
 }
