@@ -17,6 +17,7 @@ void FileServerSubsystem::initialize(Poco::Util::Application &app)
     m_UriTarget = serv_conf["uri_target"].as<std::string>();
     m_MaxFileSize = parsing::getAsBytesSize(serv_conf["max_file_size"].as<std::string>());
 
+    m_ErrorsUri = serv_conf["error_uri"].as<std::string>();
     m_FilesDir = Poco::Path::current() + serv_conf["files_dir"].as<std::string>();
     m_FilesDir.createDirectories(); // throw on error
 
@@ -25,8 +26,8 @@ void FileServerSubsystem::initialize(Poco::Util::Application &app)
 
     auto* params = new Poco::Net::HTTPServerParams;
     params->setServerName(hostname);
-    params->setMaxThreads(serv_conf["maxThreads"].as<int>());
-    params->setMaxQueued(serv_conf["maxQueuedSize"].as<int>());
+    params->setMaxThreads(serv_conf["max_threads"].as<int>());
+    params->setMaxQueued(serv_conf["max_queued_size"].as<int>());
 
     m_Serv = std::make_unique<Poco::Net::HTTPServer>(new handlers::RequestFactory, port, params);
     m_Serv->start();
@@ -42,12 +43,12 @@ Poco::UInt16 FileServerSubsystem::getPort() const
     return m_Serv->port();
 }
 
-const Poco::File &FileServerSubsystem::getFilesDirectory() const
+const Poco::File& FileServerSubsystem::getFilesDirectory() const
 {
     return m_FilesDir;
 }
 
-const std::string &FileServerSubsystem::getUriTarget() const
+const std::string& FileServerSubsystem::getUriTarget() const
 {
     return m_UriTarget;
 }
@@ -55,4 +56,9 @@ const std::string &FileServerSubsystem::getUriTarget() const
 std::size_t FileServerSubsystem::getMaxFileSize() const
 {
     return m_MaxFileSize;
+}
+
+const std::string& FileServerSubsystem::getErrorsUri() const
+{
+    return m_ErrorsUri;
 }
