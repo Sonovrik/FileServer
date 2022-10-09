@@ -5,7 +5,7 @@ server:
   max_threads: 16
   max_queued_size: 100
 
-  error_uri: /static/html/errors
+  error_uri: /static/html/errors/
   uri_target: /api/files
   files_dir: /files
 
