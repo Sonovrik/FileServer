@@ -14,12 +14,10 @@ ErrorHandler::ErrorHandler(Poco::Net::HTTPServerResponse::HTTPStatus status
 
 void ErrorHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net::HTTPServerResponse &resp)
 {
-    static const std::string errorsDirectory(Poco::Path::current() + m_PagePath.toString());
-
     resp.setChunkedTransferEncoding(true);
     if (req.getURI() == "/")
     {
-        std::string indexHtml = errorsDirectory + std::to_string(m_Status) + "/index.html";
+        std::string indexHtml = Poco::Path::current() + m_PagePath.toString() + std::to_string(m_Status) + "/index.html";
 
         resp.setStatus(m_Status);
         resp.sendFile(indexHtml,"text/html");
@@ -28,10 +26,8 @@ void ErrorHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net::H
     {
         Poco::Path uri(req.getURI());
         std::string file_path =
-                errorsDirectory
-                + std::to_string(m_Status)
-                + "/"
-                + uri.directory(uri.depth());
+                Poco::Path::current()
+                + req.getURI();
 
         resp.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
         resp.sendFile(file_path, "text");
