@@ -2,8 +2,6 @@
 
 #include <Poco/Net/HTTPServerRequest.h>
 
-#include <utility>
-
 namespace handlers
 {
 
@@ -17,7 +15,11 @@ void ErrorHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net::H
     resp.setChunkedTransferEncoding(true);
     if (m_Status != Poco::Net::HTTPResponse::HTTP_OK)
     {
-        std::string indexHtml = Poco::Path::current() + m_PagePath.toString() + std::to_string(m_Status) + "/index.html";
+        std::string indexHtml =
+                Poco::Path::current()
+                + m_PagePath.toString()
+                + std::to_string(m_Status)
+                + "/index.html";
 
         resp.setStatus(m_Status);
         resp.sendFile(indexHtml,"text/html");
