@@ -12,8 +12,8 @@ class ErrorHandler : public Poco::Net::HTTPRequestHandler
 private:
     const Poco::Net::HTTPServerResponse::HTTPStatus m_Status;
 
-private:
-    void getErrorPage(Poco::Path&& path_to_error_sources);
+//private:
+//    void getErrorPage(Poco::Path&& path_to_error_sources);
 
 public:
     ErrorHandler(Poco::Net::HTTPServerResponse::HTTPStatus status);
