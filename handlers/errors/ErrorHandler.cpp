@@ -1,7 +1,9 @@
 #include "ErrorHandler.h"
 
-#include <Poco/Net/FilePartSource.h>
+#include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Path.h>
+
+#include <fstream>
 
 namespace handlers
 {
@@ -9,28 +11,25 @@ namespace handlers
 ErrorHandler::ErrorHandler(Poco::Net::HTTPServerResponse::HTTPStatus status)
     : m_Status(status) {}
 
-void ErrorHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net::HTTPServerResponse &res)
+void ErrorHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net::HTTPServerResponse &resp)
 {
-    static const std::string errorsDirectory(Poco::Path::current() + "html/errors/");
-    std::string errorPageSrc = errorsDirectory + std::to_string(m_Status);
-    std::cout << errorPageSrc + "/index.html" << std::endl;
+    static const std::string errorsDirectory(Poco::Path::current() + "static/html/errors/");
 
-    res.setStatus(m_Status);
-    res.setChunkedTransferEncoding(true);
-    res.sendFile(errorPageSrc + "/index.html","text/html");
+    resp.setStatus(m_Status);
+    resp.setChunkedTransferEncoding(true);
+    if (req.getURI() != "/")
+    {
+        Poco::Path uri(req.getURI());
+        std::string_view file_name = uri.directory(uri.depth());
+        resp.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+        resp.sendFile(errorsDirectory + std::to_string(m_Status) + "/" + file_name.data(), "text");
+    }
+    else
+    {
+        std::string errorPageSrc = errorsDirectory + std::to_string(m_Status);
+        resp.sendFile(errorPageSrc + "/index.html","text/html");
+    }
+
 }
-
-//Poco::Net::HTMLForm ErrorHandler::getErrorPage(Poco::Path&& path_to_error_sources)
-//{
-//    static const std::string errorsDirectory(Poco::Path::current() + "html/errors/");
-//
-//    Poco::Net::HTMLForm form;
-//    form.setEncoding(Poco::Net::HTMLForm::ENCODING_MULTIPART);
-//
-//    form.addPart("index.html", new Poco::Net::FilePartSource(errorsDirectory + "index.html"));
-//
-////    return form;
-//    // open and return sources
-//}
 
 }
