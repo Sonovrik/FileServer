@@ -23,7 +23,7 @@ else()
     message(FATAL_ERROR "Poco was not found")
 endif()
 
-add_executable(FileServer
+add_executable(${PROJECT_NAME}
         handlers/RequestFactory.cpp
         handlers/get/GetFileHandler.cpp
         handlers/post/UploadFileHandler.cpp
@@ -41,3 +41,9 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
             yaml-cpp
             ${Poco_LIBRARIES})
+
+set_target_properties(${PROJECT_NAME}
+        PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")

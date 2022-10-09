@@ -30,12 +30,13 @@ Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::
 {
     Poco::Util::Application& app = FileServerApplication::instance();
     auto& serv = app.getSubsystem<FileServerSubsystem>();
+
     app.logger().information("Request from %s", request.clientAddress().toString());
 
     Poco::Net::HTTPRequestHandler *handler = nullptr;
     if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
     {
-            handler = PostHandler(request, serv);
+        handler = PostHandler(request, serv);
     }
 
     if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
