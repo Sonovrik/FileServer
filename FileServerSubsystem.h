@@ -11,6 +11,7 @@ private:
     std::string m_UriTarget;
     Poco::File  m_FilesDir;
     std::size_t m_MaxFileSize;
+    std::string  m_ErrorsUri;
 
     std::unique_ptr<Poco::Net::HTTPServer> m_Serv;
 
@@ -25,5 +26,6 @@ public:
     Poco::UInt16 getPort() const;
     const Poco::File& getFilesDirectory() const;
     const std::string& getUriTarget() const;
+    const std::string& getErrorsUri() const;
     std::size_t getMaxFileSize() const;
 };

@@ -13,7 +13,15 @@ namespace handlers
 
 Poco::Net::HTTPRequestHandler* GetHandler(const Poco::Net::HTTPServerRequest& request, const FileServerSubsystem& serv)
 {
-    return nullptr;
+    if (request.getURI() == serv.getErrorsUri())
+    {
+        return new ErrorHandler(Poco::Net::HTTPResponse::HTTP_OK,
+                                serv.getErrorsUri());
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 Poco::Net::HTTPRequestHandler* PostHandler(const Poco::Net::HTTPServerRequest& request, const FileServerSubsystem& serv)
@@ -46,7 +54,8 @@ Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::
 
     return  handler != nullptr
             ?   handler
-            :   new ErrorHandler(Poco::Net::HTTPResponse::HTTP_NOT_FOUND);
+            :   new ErrorHandler(Poco::Net::HTTPResponse::HTTP_NOT_FOUND,
+                                serv.getErrorsUri());
 }
 
 }
