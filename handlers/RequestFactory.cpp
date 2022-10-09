@@ -3,6 +3,7 @@
 
 #include "get/GetFileHandler.h"
 #include "post/UploadFileHandler.h"
+#include "errors/ErrorHandler.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Util/ServerApplication.h>
@@ -44,7 +45,7 @@ Poco::Net::HTTPRequestHandler* RequestFactory::createRequestHandler(const Poco::
 
     return  handler != nullptr
             ?   handler
-            :   handler; // TODO return 404
+            :   new ErrorHandler(Poco::Net::HTTPResponse::HTTP_NOT_FOUND);
 }
 
 }
