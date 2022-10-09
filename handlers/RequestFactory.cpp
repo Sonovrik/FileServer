@@ -13,7 +13,8 @@ namespace handlers
 
 Poco::Net::HTTPRequestHandler* GetHandler(const Poco::Net::HTTPServerRequest& request, const FileServerSubsystem& serv)
 {
-    if (request.getURI() == serv.getErrorsUri())
+    Poco::Path asd(request.getURI());
+    if (asd.toString().find(serv.getErrorsUri()) == 0)
     {
         return new ErrorHandler(Poco::Net::HTTPResponse::HTTP_OK,
                                 serv.getErrorsUri());

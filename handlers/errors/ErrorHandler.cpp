@@ -15,7 +15,7 @@ ErrorHandler::ErrorHandler(Poco::Net::HTTPServerResponse::HTTPStatus status
 void ErrorHandler::handleRequest(Poco::Net::HTTPServerRequest &req, Poco::Net::HTTPServerResponse &resp)
 {
     resp.setChunkedTransferEncoding(true);
-    if (req.getURI() == "/")
+    if (m_Status != Poco::Net::HTTPResponse::HTTP_OK)
     {
         std::string indexHtml = Poco::Path::current() + m_PagePath.toString() + std::to_string(m_Status) + "/index.html";
 
