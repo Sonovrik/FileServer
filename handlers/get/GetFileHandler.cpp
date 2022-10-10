@@ -21,14 +21,16 @@ void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net:
     {
         std::string body(std::istreambuf_iterator<char>(req.stream()), {});
         Poco::JSON::Object::Ptr object = parser.parse(body).extract<Poco::JSON::Object::Ptr>();
-        filename = object->get("filename").toString();
-
-        m_FilesDirectory.append(filename);
-        std::cout << m_FilesDirectory.toString() << std::endl;
+        m_FilesDirectory = m_FilesDirectory.path() + object->get("filename").toString());
     }
     catch (Poco::Exception &e)
     {
         return; // set 400
+    }
+
+    if (!(m_FilesDirectory.exists() && m_FilesDirectory.isFile()))
+    {
+        return; // set 404
     }
 
 //    Poco::File file = m_FilesDirectory.path() + filename;

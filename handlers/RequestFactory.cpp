@@ -13,15 +13,14 @@ namespace handlers
 
 Poco::Net::HTTPRequestHandler* GetHandler(const Poco::Net::HTTPServerRequest& request, const FileServerSubsystem& serv)
 {
-    Poco::Path uri(request.getURI());
-    std::cout << uri.parent().toString() << std::endl;
-    if (uri.toString().find(serv.getErrorsUri()) == 0)
+    if (Poco::Path(request.getURI()).toString()
+            .find(serv.getErrorsUri()) == 0)
     {
         return new ErrorHandler(Poco::Net::HTTPResponse::HTTP_OK,
                                 serv.getErrorsUri());
     }
 
-    if (uri.parent().toString() == serv.getUriTarget())
+    if (request.getURI() == serv.getUriTarget())
     {
         return new GetFileHandler(serv.getFilesDirectory().path());
     }
