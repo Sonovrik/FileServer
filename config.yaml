@@ -7,6 +7,6 @@ server:
 
   error_uri: /static/html/errors/
   uri_target: /api/files
-  files_dir: /files
+  files_dir: /static/files/
 
   max_file_size: 1_GB
