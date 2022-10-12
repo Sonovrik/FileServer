@@ -1,9 +1,9 @@
 #include "GetFileHandler.h"
 
 #include "FileServerApplication.h"
+
 #include <Poco/JSON/Parser.h>
 #include <Poco/Net/HTTPServerRequest.h>
-
 #include <utility>
 
 namespace handlers

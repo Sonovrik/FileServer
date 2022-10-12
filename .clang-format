@@ -15,6 +15,8 @@ AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: Yes
+IncludeBlocks: Regroup
+SortIncludes: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: false
