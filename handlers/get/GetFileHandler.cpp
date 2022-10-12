@@ -35,16 +35,16 @@ void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req,
 		return;	   // set 404
 	}
 
-//	Poco::File file = m_FilesDirectory.path() + filename;
-//	if (file.exists())
-//	{
-//		// unzip file
-//		// send file
-//	}
-//	else
-//	{
-//		return;	   // set 404
-//	}
+	//	Poco::File file = m_FilesDirectory.path() + filename;
+	//	if (file.exists())
+	//	{
+	//		// unzip file
+	//		// send file
+	//	}
+	//	else
+	//	{
+	//		return;	   // set 404
+	//	}
 }
 
 }

@@ -1,4 +1,6 @@
 # Generated from CLion C/C++ Code Style settings
+Language: Cpp
+Standard: Latest
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: None
@@ -16,8 +18,8 @@ AlwaysBreakTemplateDeclarations: Yes
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: false
-  AfterClass: false
   AfterControlStatement: Always
+  AfterClass: true
   AfterEnum: true
   AfterFunction: true
   AfterNamespace: true
@@ -50,6 +52,7 @@ SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCpp11BracedList: false
+Cpp11BracedListStyle: true
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
