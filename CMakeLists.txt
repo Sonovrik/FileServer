@@ -14,7 +14,7 @@ endif()
 # Yaml config parser
 add_subdirectory(third-party/yaml-cpp)
 
-find_package(Poco REQUIRED COMPONENTS Foundation Net XML Util)
+find_package(Poco REQUIRED COMPONENTS Foundation Net XML Util Zip)
 
 if (${Poco_FOUND})
     message(STATUS "Poco version: ${Poco_VERSION}")

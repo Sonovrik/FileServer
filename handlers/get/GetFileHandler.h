@@ -12,8 +12,12 @@ class GetFileHandler : public Poco::Net::HTTPRequestHandler
 private:
     Poco::File m_FilesDirectory;
 
+private:
+	std::string getJsonParam(std::istream& json_stream, const std::string& key);
+	std::streamsize decompressSingleFile(std::ostream& ostr, const Poco::File& fileToDecompress);
+
 public:
-    GetFileHandler(Poco::Path  files_dir);
+    GetFileHandler(Poco::Path files_dir);
     void handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res) override;
 };
 
