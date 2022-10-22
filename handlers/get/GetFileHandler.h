@@ -2,6 +2,7 @@
 
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerResponse.h>
+#include <Poco/Path.h>
 #include <Poco/File.h>
 
 namespace handlers
@@ -10,7 +11,8 @@ namespace handlers
 class GetFileHandler : public Poco::Net::HTTPRequestHandler
 {
 private:
-    Poco::File m_FilesDirectory;
+    const Poco::Path m_FilesDirectory;
+	inline static const std::string m_ArchExt = "zip";
 
 private:
 	std::string getJsonParam(std::istream& json_stream, const std::string& key);

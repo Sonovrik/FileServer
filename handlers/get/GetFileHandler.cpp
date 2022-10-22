@@ -20,10 +20,11 @@ GetFileHandler::GetFileHandler(Poco::Path files_dir)
 void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req,
 								   Poco::Net::HTTPServerResponse& res)
 {
+	Poco::Path fileName;
 	try
 	{
 		static const std::string jsonKeyName = "filename";
-		m_FilesDirectory = m_FilesDirectory.path() + '/' + getJsonParam(req.stream(), jsonKeyName);
+		fileName = getJsonParam(req.stream(), jsonKeyName);
 	}
 	catch (Poco::Exception& e)
 	{
@@ -31,11 +32,29 @@ void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req,
 		return;
 	}
 
-	if (!(m_FilesDirectory.exists() && m_FilesDirectory.isFile()))
+	// file name inside archive
+	Poco::Path reqFile = m_FilesDirectory.getNode() + '/' + fileName.getFileName();
+	fileName.setExtension(m_ArchExt);
+
+	// archive file name
+	Poco::File archFile = static_cast<Poco::Path>(m_FilesDirectory.getNode() + '/' + fileName.getBaseName())
+								  .setExtension(m_ArchExt);
+
+	if (!(archFile.exists() && archFile.isFile()))
 	{
 		res.redirect("/errors/404");
 		return;
 	}
+
+
+
+
+
+
+	res.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+	res.setChunkedTransferEncoding(true);
+	res.setContentType("application/octet-stream");
+	res.set("Content-Disposition", "attachment;filename=" + fileName.getFileName());
 
 	std::ostream& ostr = res.send();
 	if (decompressSingleFile(ostr, m_FilesDirectory) <= 0)
@@ -43,9 +62,6 @@ void GetFileHandler::handleRequest(Poco::Net::HTTPServerRequest& req,
 		res.redirect("/errors/500");
 		return;
 	}
-
-	res.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
-	res.setChunkedTransferEncoding(true);
 }
 
 std::string GetFileHandler::getJsonParam(std::istream& json_stream, const std::string& key)
@@ -67,8 +83,7 @@ std::streamsize GetFileHandler::decompressSingleFile(std::ostream& ostr, const P
 	}
 
 	Poco::Zip::ZipArchive arch(inp);
-	auto it = arch.headerBegin();
-
+	auto it = arch.findHeader(fileToDecompress.path());
 	if (it == arch.headerEnd())
 	{
 		return -1;
