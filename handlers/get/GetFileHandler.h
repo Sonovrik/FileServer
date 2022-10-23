@@ -3,7 +3,7 @@
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Path.h>
-#include <Poco/File.h>
+#include <Poco/Zip/ZipStream.h>
 
 namespace handlers
 {
@@ -16,7 +16,10 @@ private:
 
 private:
 	std::string getJsonParam(std::istream& json_stream, const std::string& key);
-	std::streamsize decompressSingleFile(std::ostream& ostr, const Poco::File& fileToDecompress);
+	std::streamsize sendUnzippedFileToClient(Poco::Net::HTTPServerResponse& res, const Poco::Path& fileToDecompress);
+
+	void setFileHeaders(Poco::Net::HTTPServerResponse& res, const std::string& fileName);
+	void setRedirectionHeaders(Poco::Net::HTTPServerResponse& res, const std::string& uri);
 
 public:
     GetFileHandler(Poco::Path files_dir);
